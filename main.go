@@ -2,12 +2,25 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/Leop4rdo/go-http-server/models"
+	"github.com/Leop4rdo/go-http-server/controllers"
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	server := gin.Default();
 
+func main() {
+	server := gin.Default()
+
+	models.ConnectToDatabase()
+
+	buildRoutes(server)
+
+	server.Run()
+}
+
+func buildRoutes(server *gin.Engine) {
+	
 	server.GET("/health-check", func(c *gin.Context) {
 		c.JSON(
 			http.StatusOK,
@@ -17,5 +30,5 @@ func main() {
 		)
 	})
 
-	server.Run()
+	controllers.BuildBookController(server)
 }
